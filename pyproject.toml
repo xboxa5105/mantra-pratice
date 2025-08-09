@@ -1,0 +1,15 @@
+[project]
+name = "mantra"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "fastapi[standard]>=0.116.1",
+    "pydantic>=2.11.7",
+]
+
+[dependency-groups]
+linter = [
+    "ruff>=0.12.8",
+]

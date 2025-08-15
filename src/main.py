@@ -46,4 +46,6 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
     )
 
 
-# app.include_router()
+from api.v1.router import router as v1_router
+
+app.include_router(v1_router, prefix="/api/v1")

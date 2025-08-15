@@ -12,4 +12,4 @@ class UserRepository:
 
     async def get_user(self, user_id: str) -> User | None:
         stmt = select(User).where(User.user_id == user_id)
-        return await self.__db.scalar(stmt).first()
+        return await self.__db.scalar(stmt)

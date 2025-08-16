@@ -31,8 +31,8 @@ class TestUserController:
         granularity = Granularity.DAY
 
         expected_summary = [
-            {"date": "2022-01-01", "word_count": 100, "study_time": 3600},
-            {"date": "2022-01-02", "word_count": 150, "study_time": 4200},
+            {"date": "2022-01-01T00:00:00", "word_count": 100, "study_time": 3600},
+            {"date": "2022-01-02T00:00:00", "word_count": 150, "study_time": 4200},
         ]
         self.mock_user_service.get_user_summary = AsyncMock(return_value=expected_summary)
         response = self.client.get(

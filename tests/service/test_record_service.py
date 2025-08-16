@@ -3,7 +3,7 @@ from unittest.mock import AsyncMock, MagicMock
 import pytest
 from fastapi import HTTPException
 
-from service.record.service import RecordService
+from service.record import RecordService
 
 
 class TestRecordService:

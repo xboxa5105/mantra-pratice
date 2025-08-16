@@ -6,7 +6,6 @@ from fastapi import HTTPException
 from constant.granularity import Granularity
 from repository.record import RecordRepository
 from repository.user import UserRepository
-from service.user.schema import Summary
 
 
 class UserService:
@@ -25,14 +24,13 @@ class UserService:
         )
         res = []
         for record in records:
-            summary = Summary.model_validate(
+            res.append(
                 {
                     "date": record.bucket,
                     "word_count": record.total_words,
                     "study_time": record.total_time,
                 }
-            ).model_dump(mode="json")
-            res.append(summary)
+            )
         if n is not None:
             for i in range(n - 1, len(records)):
                 word_count_sma = round(sum([record.total_words for record in records[i - n + 1 : i + 1]]) / n, 2)

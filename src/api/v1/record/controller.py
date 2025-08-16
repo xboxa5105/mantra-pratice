@@ -6,7 +6,7 @@ from fastapi.responses import JSONResponse
 
 from api.auth.authenticator import JsonWebTokenAuthenticator
 from dependency.service import get_record_service
-from service.record.service import RecordService
+from service.record import RecordService
 
 logger = logging.getLogger(__name__)
 

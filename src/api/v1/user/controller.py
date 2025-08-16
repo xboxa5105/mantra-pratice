@@ -8,7 +8,7 @@ from api.auth.authenticator import JsonWebTokenAuthenticator
 from api.v1.user.schema import GetUserSummaryResponse
 from constant.granularity import Granularity
 from dependency.service import get_user_service
-from service.user.service import UserService
+from service.user import UserService
 
 logger = logging.getLogger(__name__)
 
@@ -43,5 +43,5 @@ async def get_user_summary(
     summaries = await user.get_user_summary(user_id=user_id, start=start, end=end, granularity=granularity, n=n)
     return JSONResponse(
         status_code=status.HTTP_201_CREATED,
-        content=GetUserSummaryResponse(summary=summaries, total=len(summaries)).model_dump(),
+        content=GetUserSummaryResponse(summary=summaries, total=len(summaries)).model_dump(mode="json"),
     )

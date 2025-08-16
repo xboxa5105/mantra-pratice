@@ -6,8 +6,8 @@ import pytest
 
 from repository.record import RecordRepository
 from repository.user import UserRepository
-from service.record.service import RecordService
-from service.user.service import UserService
+from service.record import RecordService
+from service.user import UserService
 
 
 @pytest.fixture

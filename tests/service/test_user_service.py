@@ -1,4 +1,4 @@
-from unittest.mock import MagicMock
+from unittest.mock import AsyncMock, MagicMock
 
 import arrow
 import pytest
@@ -10,7 +10,7 @@ from service.user.service import UserService
 
 class TestUserService:
     @pytest.fixture(autouse=True)
-    def setup(self, mock_user_repository, mock_record_repository):
+    def setup(self, mock_user_repository: AsyncMock, mock_record_repository: AsyncMock):
         self.mock_user_repo = mock_user_repository
         self.mock_record_repo = mock_record_repository
         self.user_service = UserService(mock_record_repository, mock_user_repository)

@@ -1,5 +1,4 @@
-import time
-from unittest.mock import patch
+from unittest.mock import MagicMock, patch
 
 import arrow
 import jwt
@@ -50,7 +49,7 @@ class TestJsonWebTokenAuthenticator:
         assert token == ""
 
     @patch("jwt.decode")
-    def test_validate_jwt_token_success(self, mock_jwt_decode):
+    def test_validate_jwt_token_success(self, mock_jwt_decode: MagicMock):
         token = "valid_token"
         current_time = arrow.utcnow().int_timestamp
         mock_payload = {"user_id": "test_user_123", "exp": current_time + 3600}
@@ -62,7 +61,7 @@ class TestJsonWebTokenAuthenticator:
         mock_jwt_decode.assert_called_once_with(token, algorithms=["HS256"])
 
     @patch("jwt.decode")
-    def test_validate_jwt_token_expired(self, mock_jwt_decode):
+    def test_validate_jwt_token_expired(self, mock_jwt_decode: MagicMock):
         token = "expired_token"
         mock_jwt_decode.side_effect = jwt.ExpiredSignatureError("Token has expired")
 
@@ -71,7 +70,7 @@ class TestJsonWebTokenAuthenticator:
         assert result is None
 
     @patch("jwt.decode")
-    def test_validate_jwt_token_invalid(self, mock_jwt_decode):
+    def test_validate_jwt_token_invalid(self, mock_jwt_decode: MagicMock):
         token = "invalid_token"
         mock_jwt_decode.side_effect = jwt.InvalidTokenError("Invalid token")
 
@@ -81,7 +80,7 @@ class TestJsonWebTokenAuthenticator:
 
     @patch.object(JsonWebTokenAuthenticator, "validate_jwt_token")
     @patch.object(JsonWebTokenAuthenticator, "get_jwt")
-    def test_verify_success(self, mock_get_jwt, mock_validate_jwt):
+    def test_verify_success(self, mock_get_jwt: MagicMock, mock_validate_jwt: MagicMock):
         headers = Headers({"authorization": "Bearer valid_token"})
         mock_get_jwt.return_value = "valid_token"
         mock_validate_jwt.return_value = {"user_id": "test_user_123", "exp": arrow.utcnow().int_timestamp + 3600}
@@ -95,7 +94,7 @@ class TestJsonWebTokenAuthenticator:
 
     @patch.object(JsonWebTokenAuthenticator, "validate_jwt_token")
     @patch.object(JsonWebTokenAuthenticator, "get_jwt")
-    def test_verify_invalid_token(self, mock_get_jwt, mock_validate_jwt):
+    def test_verify_invalid_token(self, mock_get_jwt: MagicMock, mock_validate_jwt: MagicMock):
         headers = Headers({"authorization": "Bearer invalid_token"})
         mock_get_jwt.return_value = "invalid_token"
         mock_validate_jwt.return_value = None
@@ -109,7 +108,7 @@ class TestJsonWebTokenAuthenticator:
         mock_validate_jwt.assert_called_once_with("invalid_token")
 
     @patch.object(JsonWebTokenAuthenticator, "get_jwt")
-    def test_verify_missing_header(self, mock_get_jwt):
+    def test_verify_missing_header(self, mock_get_jwt: MagicMock):
         headers = Headers({})
         mock_get_jwt.side_effect = HTTPException(status_code=401, detail="Request header should contain jwt token")
 
@@ -121,7 +120,7 @@ class TestJsonWebTokenAuthenticator:
 
     @patch.object(JsonWebTokenAuthenticator, "validate_jwt_token")
     @patch.object(JsonWebTokenAuthenticator, "get_jwt")
-    def test_verify_malformed_jwt_payload(self, mock_get_jwt, mock_validate_jwt):
+    def test_verify_malformed_jwt_payload(self, mock_get_jwt: MagicMock, mock_validate_jwt: MagicMock):
         headers = Headers({"authorization": "Bearer malformed_token"})
         mock_get_jwt.return_value = "malformed_token"
 
@@ -132,7 +131,7 @@ class TestJsonWebTokenAuthenticator:
 
     @patch.object(JsonWebTokenAuthenticator, "validate_jwt_token")
     @patch.object(JsonWebTokenAuthenticator, "get_jwt")
-    def test_verify_with_different_user_ids(self, mock_get_jwt, mock_validate_jwt):
+    def test_verify_with_different_user_ids(self, mock_get_jwt: MagicMock, mock_validate_jwt: MagicMock):
         headers = Headers({"authorization": "Bearer token_user_456"})
         mock_get_jwt.return_value = "token_user_456"
         mock_validate_jwt.return_value = {"user_id": "different_user_456", "exp": arrow.utcnow().int_timestamp + 3600}
@@ -144,7 +143,7 @@ class TestJsonWebTokenAuthenticator:
 
     @patch.object(JsonWebTokenAuthenticator, "validate_jwt_token")
     @patch.object(JsonWebTokenAuthenticator, "get_jwt")
-    def test_verify_with_empty_user_id(self, mock_get_jwt, mock_validate_jwt):
+    def test_verify_with_empty_user_id(self, mock_get_jwt: MagicMock, mock_validate_jwt: MagicMock):
         headers = Headers({"authorization": "Bearer token_empty_user"})
         mock_get_jwt.return_value = "token_empty_user"
         mock_validate_jwt.return_value = {"user_id": "", "exp": arrow.utcnow().int_timestamp + 3600}

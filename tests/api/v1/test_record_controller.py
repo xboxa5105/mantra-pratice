@@ -58,9 +58,8 @@ class TestRecordController:
         user_id = "test_user_123"
         self.mock_record_service.create_record = AsyncMock(side_effect=Exception("Service error"))
 
-        response = None
         with pytest.raises(Exception, match="Service error"):
-            response = self.client.post(
+             self.client.post(
                 f"{self.base_url}/{user_id}",
                 json={"word_count": 100, "study_time": 3600},
                 headers=mock_jwt_header,

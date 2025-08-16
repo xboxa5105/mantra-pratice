@@ -23,9 +23,9 @@ class UserService:
         for record in records:
             res.append(
                 {
-                    "bucket": record.bucket,
-                    "total_words": record.total_words,
-                    "total_time": record.total_time,
+                    "date": record.bucket,
+                    "word_count": record.total_words,
+                    "study_time": record.total_time,
                 }
             )
         if n is not None:

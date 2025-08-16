@@ -1,5 +1,5 @@
 from fastapi import Depends
-from sqlalchemy import select, func
+from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from constant.granularity import Granularity
@@ -20,7 +20,7 @@ class RecordRepository:
             select(
                 func.date_trunc(granularity, Record.timestamp).label("bucket"),
                 func.sum(Record.word_count).label("total_words"),
-                func.sum(Record.study_time).label("total_time")
+                func.sum(Record.study_time).label("total_time"),
             )
             .where(Record.user_id == user_id, Record.timestamp >= start, Record.timestamp < end)
             .group_by("bucket")

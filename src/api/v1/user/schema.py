@@ -2,7 +2,7 @@ from pydantic import BaseModel
 
 
 class Summary(BaseModel):
-    timestamp: str
+    date: str
     word_count: int
     study_time: int
     word_count_sma: float | None = None

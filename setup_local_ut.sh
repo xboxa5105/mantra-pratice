@@ -6,8 +6,6 @@ if [ "$REBUILD" == "ok" ]; then
 	DOCKER_BUILDKIT=1 docker compose build
 fi;
 docker compose up -d --remove-orphans
-echo "To run all test: (run the following command)"
-echo pytest --log-level=INFO -v --sw tests/
-echo "Or with coverage example:"
-echo "pytest  --log-level=INFO -v --cov-report term:skip-covered --cov=./adapter tests/adapter/"
+echo "To run server"
+echo fastapi run main.py --port 8000
 docker exec -it server-ut /bin/bash

@@ -2,9 +2,8 @@ import uuid
 
 import arrow
 from sqlalchemy import UUID, Column, DateTime, Integer, String
-from sqlalchemy.orm import declarative_base
 
-Base = declarative_base()
+from model.base import Base
 
 
 class User(Base):

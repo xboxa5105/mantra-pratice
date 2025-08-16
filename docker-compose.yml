@@ -25,7 +25,8 @@ services:
     image: server
     container_name: server-ut
     volumes:
-      - ${PWD}/tests:/tests
+      - ${PWD}/src:/app
+      - ${PWD}/scripts:/scripts
     build:
       context: .
     platform: linux/amd64
@@ -47,6 +48,7 @@ services:
       REDIS_HOST: redis
       REDIS_PORT: 6379
       COVERAGE_FILE: /tmp/.coverage
+    entrypoint: "bash -c 'sleep infinity'"
 
 networks:
   app-net:

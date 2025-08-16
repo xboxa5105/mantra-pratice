@@ -1,13 +1,30 @@
 import logging
+import logging.config
+import uuid
 
 from fastapi import FastAPI, Request, status
 from fastapi.exceptions import HTTPException, RequestValidationError
 from fastapi.responses import JSONResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
+from api.v1.router import router as v1_router
+from core.contextvar.trace_id import trace_id_ctx
+from util.logger import logger_config
+
+logging.config.dictConfig(logger_config())
 logger = logging.getLogger(__name__)
 
 app = FastAPI()
+
+
+@app.middleware("http")
+async def add_process_time_header(request: Request, call_next):
+    trace_id = request.headers.get("X-Trace-Id", str(uuid.uuid4()))
+    trace_id_ctx.set(trace_id)
+    response = await call_next(request)
+    response.headers["X-Trace-Id"] = trace_id
+    trace_id_ctx.set("-")
+    return response
 
 
 @app.exception_handler(HTTPException)
@@ -29,7 +46,7 @@ async def generic_exception_handler(request: Request, exc: Exception):
 async def http_exception_handler(request: Request, exc: StarletteHTTPException):
     return JSONResponse(
         status_code=exc.status_code,
-        content={"code": int(f"{exc.status_code}000"), "message": str(exc.detail)},
+        content={"message": str(exc.detail)},
     )
 
 
@@ -45,7 +62,5 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
         content={"msg": message},
     )
 
-
-from api.v1.router import router as v1_router
 
 app.include_router(v1_router, prefix="/api/v1")

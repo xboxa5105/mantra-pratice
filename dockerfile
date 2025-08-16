@@ -20,7 +20,7 @@ FROM python:3.13-slim
 ARG BUILD_VERSION
 ARG BUILD_TIME
 
-RUN apt-get update; apt-get -y install curl vim
+RUN apt-get update; apt-get -y install curl vim postgresql
 
 WORKDIR /app
 

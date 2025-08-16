@@ -1,12 +1,12 @@
-import arrow
+from unittest.mock import AsyncMock
+
 import pytest
-from unittest.mock import AsyncMock, patch
 from fastapi import status
 from fastapi.testclient import TestClient
 
-from main import app
 from constant.granularity import Granularity
 from dependency.service import get_user_service
+from main import app
 
 
 class TestUserController:
@@ -35,18 +35,19 @@ class TestUserController:
             {"date": "2022-01-02", "word_count": 150, "study_time": 4200},
         ]
         self.mock_user_service.get_user_summary = AsyncMock(return_value=expected_summary)
-        # Act
         response = self.client.get(
-            f"{self.base_url}/{user_id}/summary", params={"start": start, "end": end, "granularity": granularity.value},
-            headers=mock_jwt_header
+            f"{self.base_url}/{user_id}/summary",
+            params={"start": start, "end": end, "granularity": granularity.value},
+            headers=mock_jwt_header,
         )
-        # Assert
         assert response.status_code == status.HTTP_201_CREATED
         response_data = response.json()
         for summary in expected_summary:
-            summary.update({
-                "study_time_sma": None,
-                "word_count_sma": None,
-            })
+            summary.update(
+                {
+                    "study_time_sma": None,
+                    "word_count_sma": None,
+                }
+            )
         assert response_data["summary"] == expected_summary
         assert response_data["total"] == len(expected_summary)

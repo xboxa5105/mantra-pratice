@@ -1,5 +1,5 @@
 import arrow
-from sqlalchemy import Column, DateTime, Integer, String
+from sqlalchemy import UUID, Column, DateTime, Integer, String
 
 from model.base import Base
 
@@ -9,7 +9,7 @@ class Record(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     record_id = Column(String, unique=True, index=True)
-    user_id = Column(Integer, index=True, nullable=False)
+    user_id = Column(UUID(as_uuid=True), index=True, nullable=False)
     word_count = Column(Integer, nullable=False)
     study_time = Column(Integer, nullable=False)
-    timestamp = Column(DateTime, default=arrow.utcnow().naive, nullable=False)
+    date = Column(DateTime, default=arrow.utcnow().naive, nullable=False)

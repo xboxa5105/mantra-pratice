@@ -6,7 +6,7 @@ from fastapi.responses import JSONResponse
 
 from api.auth.authenticator import JsonWebTokenAuthenticator
 from dependency.service import get_record_service
-from service.record import RecordService
+from service.record.service import RecordService
 
 logger = logging.getLogger(__name__)
 
@@ -37,9 +37,6 @@ async def create_record(
     study_time: Annotated[int, Body()],
     timestamp: Annotated[int, Body()] = None,
 ) -> JSONResponse:
-    """
-    Create a new record for a user.
-    """
     await record.create_record(user_id=user_id, word_count=word_count, study_time=study_time, timestamp=timestamp)
     return JSONResponse(
         status_code=status.HTTP_201_CREATED,

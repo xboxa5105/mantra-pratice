@@ -3,7 +3,11 @@ from typing import Any
 
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 
-DATABASE_URL = "postgresql+psycopg://user:password@localhost:5432/mydb"
+from dependency.setting import get_settings
+
+settings = get_settings()
+
+DATABASE_URL = f"postgresql+asyncpg://{settings.postgres_user}:{settings.postgres_password}@{settings.postgres_host}:{settings.postgres_port}/{settings.postgres_db}"
 
 kwargs = {
     "echo": False,

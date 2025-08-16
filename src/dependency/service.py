@@ -5,8 +5,8 @@ from fastapi import Depends
 from dependency.repository import get_record_repository, get_user_repository
 from repository.record import RecordRepository
 from repository.user import UserRepository
-from service.record import RecordService
-from service.user import UserService
+from service.record.service import RecordService
+from service.user.service import UserService
 
 
 def get_record_service(

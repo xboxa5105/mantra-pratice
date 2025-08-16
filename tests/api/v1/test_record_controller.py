@@ -1,15 +1,14 @@
-import pytest
 from unittest.mock import AsyncMock
+
+import pytest
 from fastapi import status
 from fastapi.testclient import TestClient
 
-from main import app
 from dependency.service import get_record_service
-from api.auth.authenticator import JsonWebTokenAuthenticator
+from main import app
 
 
 class TestRecordController:
-
     @pytest.fixture(autouse=True)
     def setup(self, mock_record_service):
         self.mock_record_service = mock_record_service
@@ -33,11 +32,7 @@ class TestRecordController:
 
         response = self.client.post(
             f"{self.base_url}/{user_id}",
-            json={
-                "word_count": word_count,
-                "study_time": study_time,
-                "timestamp": timestamp
-            },
+            json={"word_count": word_count, "study_time": study_time, "timestamp": timestamp},
             headers=mock_jwt_header,
         )
 
@@ -53,10 +48,7 @@ class TestRecordController:
 
         response = self.client.post(
             f"{self.base_url}/{user_id}",
-            json={
-                "word_count": word_count,
-                "study_time": study_time
-            },
+            json={"word_count": word_count, "study_time": study_time},
             headers=mock_jwt_header,
         )
 
@@ -70,10 +62,7 @@ class TestRecordController:
         with pytest.raises(Exception, match="Service error"):
             response = self.client.post(
                 f"{self.base_url}/{user_id}",
-                json={
-                    "word_count": 100,
-                    "study_time": 3600
-                },
+                json={"word_count": 100, "study_time": 3600},
                 headers=mock_jwt_header,
             )
 
@@ -84,7 +73,7 @@ class TestRecordController:
             f"{self.base_url}/{user_id}",
             json={
                 "word_count": "invalid",  # 應該是整數
-                "study_time": 3600
+                "study_time": 3600,
             },
             headers=mock_jwt_header,
         )

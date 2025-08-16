@@ -12,15 +12,6 @@ services:
     networks:
       - app-net
 
-  redis:
-    image: redis:7
-    container_name: redis-ut
-    restart: always
-    ports:
-      - "6379:6379"
-    networks:
-      - app-net
-
   app:
     image: server
     container_name: server-ut
@@ -34,7 +25,6 @@ services:
       - "8000:8000"
     depends_on:
       - postgres
-      - redis
     networks:
       - app-net
     tmpfs:
@@ -45,8 +35,6 @@ services:
       POSTGRES_USER: ut_user
       POSTGRES_PASSWORD: ut_pass
       POSTGRES_DB: db-ut
-      REDIS_HOST: redis
-      REDIS_PORT: 6379
       COVERAGE_FILE: /tmp/.coverage
     entrypoint: "bash -c 'sleep infinity'"
 

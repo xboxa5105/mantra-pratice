@@ -1,8 +1,10 @@
+from datetime import datetime
+
 from pydantic import BaseModel
 
 
 class Summary(BaseModel):
-    date: str
+    date: datetime
     word_count: int
     study_time: int
     word_count_sma: float | None = None
